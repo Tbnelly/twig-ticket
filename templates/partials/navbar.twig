@@ -1,0 +1,88 @@
+<nav class="flex items-center py-4 px-6 max-w-[1440px] mx-auto w-full relative">
+  {# Left: Logo #}
+  <div class="flex-shrink-0">
+    <h1 class="text-2xl font-bold text-blue-600">TicketWave</h1>
+  </div>
+
+  {# Desktop Links #}
+  <div class="flex-1 justify-center hidden md:flex">
+    <div class="flex items-center space-x-6">
+      <a href="/" class="text-gray-700 hover:text-blue-600 {% if current_page == 'home' %}text-blue-600 font-bold{% endif %}">Home</a>
+      <a href="/auth/login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
+      <a href="/auth/signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
+    </div>
+  </div>
+
+  {# Mobile Hamburger Button #}
+  <div class="flex md:hidden ml-auto">
+    <button
+      id="mobileMenuToggle"
+      class="text-gray-700 hover:text-blue-600 focus:outline-none"
+    >
+      <svg
+        id="menuIcon"
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+  </div>
+
+  {# Mobile Menu #}
+  <div
+    id="mobileMenu"
+    class="hidden fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg z-50 flex flex-col justify-center items-start p-6 md:hidden transition-transform duration-300 space-y-6"
+  >
+    <a href="/" class="text-gray-700 hover:text-blue-600 {% if current_page == 'home' %}text-blue-600 font-bold{% endif %}">Home</a>
+    <a href="/auth/login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
+    <a href="/auth/signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
+
+    <button
+      id="closeMenu"
+      class="absolute top-6 right-6 text-gray-700 hover:text-blue-600"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const menuToggle = document.getElementById('mobileMenuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+  const menuIcon = document.getElementById('menuIcon');
+
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    menuIcon.innerHTML = mobileMenu.classList.contains('hidden')
+      ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>'
+      : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>';
+  });
+
+  closeMenu?.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+    menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>';
+  });
+</script>

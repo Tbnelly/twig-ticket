@@ -1,0 +1,52 @@
+{% extends "base.twig" %}
+
+{% block title %}TicketWave | Home{% endblock %}
+
+{% block content %}
+  <div class="flex flex-col min-h-screen overflow-hidden">
+
+    {# Hero Section #}
+    <main class="relative flex-1 flex flex-col items-center justify-center text-center bg-gradient-to-b from-blue-50 to-white overflow-hidden">
+
+      {# Decorative Circle #}
+      <div class="absolute top-10 right-20 w-40 h-40 bg-blue-500 rounded-full mix-blend-multiply blur-2xl opacity-30 animate-pulse"></div>
+
+      <div class="z-10 px-6 max-w-3xl mx-auto">
+        <h1 class="text-5xl font-extrabold text-gray-800 mb-4">
+          Manage Your Tickets Seamlessly
+        </h1>
+        <p class="text-lg text-gray-600 mb-8">
+          A unified platform to create, track, and resolve tickets with ease — fast, secure, and consistent.
+        </p>
+
+        <div class="space-x-4">
+          <a
+            href="/?page=login"
+            class="bg-blue-600 text-white px-6 py-3 rounded-2xl shadow hover:bg-blue-700 transition"
+          >
+            Login
+          </a>
+          <a
+            href="/?page=signup"
+            class="bg-white border border-blue-600 text-blue-600 px-6 py-3 rounded-2xl shadow hover:bg-blue-50 transition"
+          >
+            Get Started
+          </a>
+        </div>
+      </div>
+
+      {# Wavy SVG Background #}
+      <svg
+        class="absolute bottom-0 left-0 w-full"
+        viewBox="0 0 1440 320"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill="#3b82f6"
+          fill-opacity="1"
+          d="M0,160L60,144C120,128,240,96,360,80C480,64,600,64,720,80C840,96,960,128,1080,160C1200,192,1320,224,1380,240L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
+        ></path>
+      </svg>
+    </main>
+  </div>
+{% endblock %}

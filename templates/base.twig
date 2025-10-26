@@ -1,0 +1,22 @@
+{# templates/base.twig #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TicketWave{% endblock %}</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  {% include 'partials/navbar.twig' %}
+  
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  
+  {% include 'partials/footer.twig' %}
+  
+  <script src="/main.js"></script>
+</body>
+</html>

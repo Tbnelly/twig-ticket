@@ -1,0 +1,107 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<main class="flex flex-1 flex-col justify-center items-center bg-gray-50 min-h-screen">
+  <div class="w-full max-w-md bg-white shadow-md rounded-2xl p-8">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Sign Up</h2>
+
+    <form id="signupForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
+        />
+        <p id="nameError" class="text-red-500 text-sm mt-1 hidden"></p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
+        />
+        <p id="emailError" class="text-red-500 text-sm mt-1 hidden"></p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
+        />
+        <p id="passwordError" class="text-red-500 text-sm mt-1 hidden"></p>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition"
+      >
+        Sign Up
+      </button>
+
+      <p class="text-center text-sm text-gray-600 mt-4">
+        Already have an account?
+        <a href="/auth/login" class="text-blue-600 font-semibold hover:underline">
+          Login
+        </a>
+      </p>
+    </form>
+  </div>
+</main>
+
+<script>
+  document.querySelector('#signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.querySelector('#name').value.trim();
+    const email = document.querySelector('#email').value.trim();
+    const password = document.querySelector('#password').value.trim();
+
+    const nameError = document.querySelector('#nameError');
+    const emailError = document.querySelector('#emailError');
+    const passwordError = document.querySelector('#passwordError');
+
+    nameError.classList.add('hidden');
+    emailError.classList.add('hidden');
+    passwordError.classList.add('hidden');
+
+    if (!name) {
+      nameError.textContent = 'Full name is required';
+      nameError.classList.remove('hidden');
+      return;
+    }
+
+    if (!email) {
+      emailError.textContent = 'Email is required';
+      emailError.classList.remove('hidden');
+      return;
+    }
+
+    if (!password) {
+      passwordError.textContent = 'Password is required';
+      passwordError.classList.remove('hidden');
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const existingUser = users.find(u => u.email === email);
+
+    if (existingUser) {
+      alert('User already exists. Please log in.');
+      return;
+    }
+
+    users.push({ name, email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Signup successful!');
+    window.location.href = '/auth/login';
+  });
+</script>
+{% endblock %}

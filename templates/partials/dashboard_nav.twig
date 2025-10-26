@@ -1,0 +1,18 @@
+<nav class="flex items-center justify-between py-4 px-6 max-w-[1440px] mx-auto w-full bg-white shadow-md rounded-b-2xl">
+  <h1 class="text-2xl font-bold text-blue-600">TicketWave</h1>
+
+  <button
+    id="logoutBtn"
+    class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition"
+  >
+    Logout
+  </button>
+</nav>
+
+<script>
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem('ticketapp_session');
+    localStorage.removeItem('current_user');
+    window.location.href = '/';
+  });
+</script>
