@@ -16,5 +16,5 @@ RUN docker-php-ext-install pdo pdo_mysql
 # Expose port 80 (Apache default)
 EXPOSE 80
 
-# Start Apache in foreground (this avoids $PORT issues)
+# Start Apache in foreground
 CMD ["apache2-foreground"]
