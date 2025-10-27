@@ -1,16 +1,20 @@
 # Use PHP with Apache
 FROM php:8.2-apache
 
-# Copy all project files
-COPY . /var/www/html/
-
 # Set working directory
-WORKDIR /var/www/html/
+WORKDIR /var/www/html
 
-# Move into public as web root
+# Copy all project files
+COPY . /var/www/html
+
+# Move contents of /public to Apache root
 RUN cp -r public/* /var/www/html/ && rm -rf public
 
-# Optional: install extensions if you use them (like Twig)
+# Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
+# Expose port 80 (Apache default)
 EXPOSE 80
+
+# Start Apache in foreground (this avoids $PORT issues)
+CMD ["apache2-foreground"]
