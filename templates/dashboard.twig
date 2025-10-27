@@ -6,7 +6,12 @@
 
   <main class="flex-1 max-w-[1440px] mx-auto w-full px-6 py-10">
     <div class="flex justify-between items-center mb-10">
-      <h2 class="text-3xl font-bold text-gray-800">Dashboard</h2>
+      <h2 class="text-3xl font-bold text-gray-800">
+        Dashboard
+      </h2>
+      <p class="text-gray-600 text-sm">
+        Welcome, <span id="userEmail" class="font-medium"></span>
+      </p>
     </div>
 
     <!-- Stats Cards -->
@@ -35,7 +40,7 @@
     <!-- Navigation -->
     <div class="text-center">
       <a
-        href="/tickets"
+        href="/?page=tickets"
         class="bg-blue-600 text-white px-8 py-3 rounded-2xl shadow hover:bg-blue-700 transition"
       >
         Manage Tickets
@@ -46,19 +51,60 @@
   {% include "partials/footer.twig" %}
 </div>
 
+<!-- Scripts -->
+<script src="/js/auth.js"></script>
+<script src="/js/tickets.js"></script>
+<script src="/js/toast.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+function updateDashboardStats() {
+  const currentUser = JSON.parse(localStorage.getItem("current_user"));
+  if (!currentUser) {
+    showToast("Please log in to access your dashboard", "error");
+    setTimeout(() => {
+      window.location.href = "/?page=login";
+    }, 1200);
+    return;
+  }
 
-    const total = tickets.length;
-    const open = tickets.filter(t => t.status === "open").length;
-    const inProgress = tickets.filter(t => t.status === "in_progress").length;
-    const closed = tickets.filter(t => t.status === "closed").length;
+  // Show email
+  const userEmailEl = document.getElementById("userEmail");
+  if (userEmailEl) userEmailEl.textContent = currentUser.email;
 
-    document.getElementById("totalTickets").textContent = total;
-    document.getElementById("openTickets").textContent = open;
-    document.getElementById("progressTickets").textContent = inProgress;
-    document.getElementById("closedTickets").textContent = closed;
-  });
+  // Get all tickets
+  const allTickets = JSON.parse(localStorage.getItem("tickets")) || [];
+  const userTickets = allTickets.filter(t => t.owner === currentUser.email);
+
+  // Calculate counts
+  const total = userTickets.length;
+  const open = userTickets.filter(t => t.status === "open").length;
+  const inProgress = userTickets.filter(t => t.status === "in_progress").length;
+  const closed = userTickets.filter(t => t.status === "closed").length;
+
+  // Update UI
+  document.getElementById("totalTickets").textContent = total;
+  document.getElementById("openTickets").textContent = open;
+  document.getElementById("progressTickets").textContent = inProgress;
+  document.getElementById("closedTickets").textContent = closed;
+
+  // Toast feedback
+  showToast("Dashboard stats refreshed", "info");
+}
+
+// Run on page load
+window.addEventListener("load", () => {
+  updateDashboardStats();
+  const currentUser = JSON.parse(localStorage.getItem("current_user"));
+  if (currentUser) {
+    showToast(`Welcome back, ${currentUser.email.split("@")[0]}!`, "success");
+  }
+});
+
+// Recalculate when returning from another tab
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    updateDashboardStats();
+  }
+});
 </script>
+
 {% endblock %}

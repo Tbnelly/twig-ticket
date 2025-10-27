@@ -1,28 +1,20 @@
 {% extends "base.twig" %}
 
+{% block title %}TicketWave | Sign Up{% endblock %}
+
 {% block content %}
 <main class="flex flex-1 flex-col justify-center items-center bg-gray-50 min-h-screen">
   <div class="w-full max-w-md bg-white shadow-md rounded-2xl p-8">
-    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Sign Up</h2>
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Create Account</h2>
 
     <form id="signupForm" class="space-y-5">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
-        />
-        <p id="nameError" class="text-red-500 text-sm mt-1 hidden"></p>
-      </div>
-
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
           type="email"
           id="email"
           name="email"
+          autocomplete="email"
           class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
         />
         <p id="emailError" class="text-red-500 text-sm mt-1 hidden"></p>
@@ -34,9 +26,22 @@
           type="password"
           id="password"
           name="password"
+          autocomplete="new-password"
           class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
         />
         <p id="passwordError" class="text-red-500 text-sm mt-1 hidden"></p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          autocomplete="new-password"
+          class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500"
+        />
+        <p id="confirmPasswordError" class="text-red-500 text-sm mt-1 hidden"></p>
       </div>
 
       <button
@@ -48,7 +53,7 @@
 
       <p class="text-center text-sm text-gray-600 mt-4">
         Already have an account?
-        <a href="/auth/login" class="text-blue-600 font-semibold hover:underline">
+        <a href="/?page=login" class="text-blue-600 font-semibold hover:underline">
           Login
         </a>
       </p>
@@ -56,52 +61,66 @@
   </div>
 </main>
 
-<script>
-  document.querySelector('#signupForm').addEventListener('submit', function(e) {
+<script type="module">
+  import { showToast } from "/js/toast.js";
+
+  const signupForm = document.getElementById('signupForm');
+
+  signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const name = document.querySelector('#name').value.trim();
-    const email = document.querySelector('#email').value.trim();
-    const password = document.querySelector('#password').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-    const nameError = document.querySelector('#nameError');
-    const emailError = document.querySelector('#emailError');
-    const passwordError = document.querySelector('#passwordError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
 
-    nameError.classList.add('hidden');
+    // Reset errors
     emailError.classList.add('hidden');
     passwordError.classList.add('hidden');
+    confirmPasswordError.classList.add('hidden');
 
-    if (!name) {
-      nameError.textContent = 'Full name is required';
-      nameError.classList.remove('hidden');
+    const errors = {};
+
+    if (!email) errors.email = "Email is required";
+    if (!password) errors.password = "Password is required";
+    else if (password.length < 6) errors.password = "Password must be at least 6 characters";
+    if (password !== confirmPassword) errors.confirmPassword = "Passwords do not match";
+
+    if (Object.keys(errors).length) {
+      if (errors.email) {
+        emailError.textContent = errors.email;
+        emailError.classList.remove('hidden');
+      }
+      if (errors.password) {
+        passwordError.textContent = errors.password;
+        passwordError.classList.remove('hidden');
+      }
+      if (errors.confirmPassword) {
+        confirmPasswordError.textContent = errors.confirmPassword;
+        confirmPasswordError.classList.remove('hidden');
+      }
       return;
     }
 
-    if (!email) {
-      emailError.textContent = 'Email is required';
-      emailError.classList.remove('hidden');
-      return;
-    }
-
-    if (!password) {
-      passwordError.textContent = 'Password is required';
-      passwordError.classList.remove('hidden');
-      return;
-    }
-
+    // Get or create users list
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const existingUser = users.find(u => u.email === email);
 
-    if (existingUser) {
-      alert('User already exists. Please log in.');
+    if (users.some(u => u.email === email)) {
+      showToast('User already exists. Please log in.', 'error');
       return;
     }
 
-    users.push({ name, email, password });
+    // Save new user
+    users.push({ email, password });
     localStorage.setItem('users', JSON.stringify(users));
-    alert('Signup successful!');
-    window.location.href = '/auth/login';
+
+    showToast('Signup successful! Redirecting to login...', 'success');
+    setTimeout(() => {
+      window.location.href = '/?page=login';
+    }, 1200);
   });
 </script>
 {% endblock %}

@@ -7,9 +7,9 @@
   {# Desktop Links #}
   <div class="flex-1 justify-center hidden md:flex">
     <div class="flex items-center space-x-6">
-      <a href="/" class="text-gray-700 hover:text-blue-600 {% if current_page == 'home' %}text-blue-600 font-bold{% endif %}">Home</a>
-      <a href="/auth/login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
-      <a href="/auth/signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
+      <a href="/?page=landing" class="text-gray-700 hover:text-blue-600 {% if current_page == 'landing' %}text-blue-600 font-bold{% endif %}">Home</a>
+      <a href="/?page=login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
+      <a href="/?page=signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
     </div>
   </div>
 
@@ -42,9 +42,9 @@
     id="mobileMenu"
     class="hidden fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg z-50 flex flex-col justify-center items-start p-6 md:hidden transition-transform duration-300 space-y-6"
   >
-    <a href="/" class="text-gray-700 hover:text-blue-600 {% if current_page == 'home' %}text-blue-600 font-bold{% endif %}">Home</a>
-    <a href="/auth/login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
-    <a href="/auth/signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
+    <a href="/?page=landing" class="text-gray-700 hover:text-blue-600 {% if current_page == 'landing' %}text-blue-600 font-bold{% endif %}">Home</a>
+    <a href="/?page=login" class="text-gray-700 hover:text-blue-600 {% if current_page == 'login' %}text-blue-600 font-bold{% endif %}">Login</a>
+    <a href="/?page=signup" class="text-gray-700 hover:text-blue-600 {% if current_page == 'signup' %}text-blue-600 font-bold{% endif %}">Register</a>
 
     <button
       id="closeMenu"
